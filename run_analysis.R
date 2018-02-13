@@ -28,7 +28,8 @@ subject_test <- read.table("./rawdata/UCI HAR Dataset/test/subject_test.txt")
 features <- read.table('./rawdata/UCI HAR Dataset/features.txt')
 
 #---  Reading activity labels 
-activityLabels = read.table('./rawdata/UCI HAR Dataset/activity_labels.txt')
+actLabels = read.table('./rawdata/UCI HAR Dataset/activity_labels.txt')
+
 
 #---  Assign Column Names
 colnames(x_train) <- features[,2] 
@@ -37,7 +38,7 @@ colnames(subject_train) <- "subjectId"
 colnames(x_test) <- features[,2] 
 colnames(y_test) <- "activityId"
 colnames(subject_test) <- "subjectId" 
-colnames(activityLabels) <- c('activityId','activityType')
+colnames(actLabels) <- c("activityId","activityType")
 
 #---  Merging all data into one set
 merge_train <- cbind(y_train, subject_train, x_train)
@@ -58,13 +59,16 @@ mean_and_std <- (grepl("activityId" , columnNames) |
 setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
 
 #---  Attach descriptive activity names  
-setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
-                              by='activityId',
+setWithActivityNames <- merge(setForMeanAndStd, actLabels,
+                              by="activityId",
                               all.x=TRUE)                              
                               
 #--- Creating a second, independent tidy data set 
-secTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
-secTidySet <- secTidySet[order(secTidySet$subjectId, secTidySet$activityId),]
+finalTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
+finalTidySet <- finalTidySet[order(finalTidySet$subjectId, finalTidySet$activityId),]
 
-#--- Writing second tidy data set in txt file
-write.table(secTidySet, "secondTidySet.txt", row.name=FALSE)
+#--- activityID is used for Sorting an aggregation
+#--- activityType column (last column of the set) denotes descriptive Activity Label
+
+#--- Writing  tidy data set in txt file
+write.table(finalTidySet, "finalTidySet.txt", row.name=FALSE)
