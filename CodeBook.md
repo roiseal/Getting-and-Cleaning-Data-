@@ -4,8 +4,8 @@ This code book summarizes the resulting data fields in "secondTidySet.txt".
 ## Identifiers
 
 * "subjectId" - The ID of the test subject
+* "activityType" - Human Readable Activity Label
 * "activityId" - The type of activity performed when the corresponding measurements were taken
-* "activityType" - Last column in the dataset, explained in ## Activity Labels  section ofr CodeBook below.
 
 ## Measurements
 
