@@ -38,7 +38,7 @@ colnames(subject_train) <- "subjectId"
 colnames(x_test) <- features[,2] 
 colnames(y_test) <- "activityId"
 colnames(subject_test) <- "subjectId" 
-colnames(actLabels) <- c("activityId","activityType")
+colnames(actLabels) <- c('activityId' , 'activityType')
 
 #---  Merging all data into one set
 merge_train <- cbind(y_train, subject_train, x_train)
@@ -60,15 +60,12 @@ setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
 
 #---  Attach descriptive activity names  
 setWithActivityNames <- merge(setForMeanAndStd, actLabels,
-                              by="activityId",
+                              by='activityId',
                               all.x=TRUE)                              
                               
 #--- Creating a second, independent tidy data set 
-finalTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
+finalTidySet <- aggregate(. ~subjectId + activityType, setWithActivityNames, mean)
 finalTidySet <- finalTidySet[order(finalTidySet$subjectId, finalTidySet$activityId),]
-
-#--- activityID is used for Sorting an aggregation
-#--- activityType column (last column of the set) denotes descriptive Activity Label
 
 #--- Writing  tidy data set in txt file
 write.table(finalTidySet, "finalTidySet.txt", row.name=FALSE)
